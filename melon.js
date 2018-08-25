@@ -4,27 +4,39 @@ const cheerio = require('cheerio');
 const endpoint = 'https://www.melon.com/chart';
 
 module.exports = Melon = {
-    parseChart: (chartType='') => {
-        axios.get(`${endpoint}/${chartType}/index.htm`)
+    getCurrentChart: (chartType='', classCd='GN0000') => {
+        let url = `${endpoint}/${chartType}/index.htm`;
+        // url = filter ? url + '?classCd=' + filter : url;
+        return axios.get(url, { params: { classCd } })
         .then((res) => {
             const $ = cheerio.load(res.data);
-            let titles = [];
+            let songs = [];
             $('.ellipsis.rank01').find('a').each((i, elem) => {
-                titles[i] = $(elem).text();
+                // songs[i] = {
+                //     title: $(elem).text()
+                // };
+                songs[i] = $(elem).text();
             });
-            let artists = [];
             $('.ellipsis.rank02').each((i, elem) => {
-                let artistStr = "";
+                let artistStr = '';
                 let currentArtist = $(elem).children()[0];
                 while (currentArtist.name !== 'span') {
                     artistStr += currentArtist.data || currentArtist.children[0].data;
                     currentArtist = currentArtist.next;
                 }
-                artists[i] = artistStr;
+                songs[i] += `- ${artistStr}`;
             });
-            for (let i=0; i<100; i++) {
-                console.log(titles[i] + " - " + artists[i])
-            }
+            // for (let i=0; i<100; i++) {
+            //     console.log(songs[i])
+            // }
+            return new Promise((resolve, reject) => {
+                if (songs.length === 100) {
+                    resolve(songs);
+                }
+                else {
+                    reject("Didn't receive exactly 100 songs!");
+                }
+            });
         })
         .catch((error) => {
             console.log(error);

@@ -1,6 +1,13 @@
 const Melon = require('./melon');
+const Filters = require('./melonFilters');
 
-// Melon.parseChart();
-// Melon.parseChart('day');
-// Melon.parseChart('week');
-Melon.parseChart('month');
+// Melon.getCurrentChart();
+// Melon.getCurrentChart('day');
+// Melon.getCurrentChart('week');
+Melon.getCurrentChart('month')
+.then((res) => {
+    console.log(res);
+})
+.catch((error) => {
+    console.log(error);
+})
