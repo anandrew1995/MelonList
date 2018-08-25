@@ -1,0 +1,23 @@
+{
+  "name": "melontoyoutube",
+  "version": "1.0.0",
+  "description": "Crawls and parses the Melon charts and creates private Youtube playlists.",
+  "main": "init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ys27/MelonToYoutube.git"
+  },
+  "author": "Andrew An",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ys27/MelonToYoutube/issues"
+  },
+  "homepage": "https://github.com/ys27/MelonToYoutube#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2"
+  }
+}
