@@ -1,0 +1,10 @@
+.Chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+td {
+    text-align: center;
+    padding: 10px 20px 0px 20px;
+}
