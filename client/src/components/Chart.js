@@ -3,14 +3,11 @@ import React from 'react';
 import '../styles/Chart.css';
 
 import Loader from './Loader';
-import Filters from './Filters';
 
 class Chart extends React.Component {
     render() {
         return (
             <div className='Chart'>
-                <h1>멜론 TOP 100</h1>
-                <Filters retrieveChart={this.props.retrieveChart}/>
                 {
                     this.props.chart.songs.length > 0 ?
                     <div className='table'>

@@ -4,8 +4,9 @@ import axios from 'axios';
 import '../styles/App.css';
 
 import Login from './Login';
-import Chart from './Chart';
+import Filters from './Filters';
 import Export from './Export';
+import Chart from './Chart';
 
 class App extends React.Component {
     constructor() {
@@ -40,11 +41,11 @@ class App extends React.Component {
     render() {
         return (
             <div className='App'>
-                <div className='header'>
-                    <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
-                    {this.state.loggedIn ? <Export chart={this.state.chart} logOut={this.logOut}/> : null}
-                </div>
-                <Chart retrieveChart={this.retrieveChart} chart={this.state.chart}/>
+                <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
+                <h1>멜론 TOP 100</h1>
+                <Filters retrieveChart={this.retrieveChart}/>
+                <Chart chart={this.state.chart}/>
+                {this.state.loggedIn ? <Export chart={this.state.chart} logOut={this.logOut}/> : null}
             </div>
         );
     }

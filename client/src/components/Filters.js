@@ -59,7 +59,7 @@ class Filters extends React.Component {
                         </div>
                     </div>
                 ))}
-                <button className='retrieve' onClick={this.retrieveChart}>불러오기</button>
+                <button className='retrieve btn btn-secondary' onClick={this.retrieveChart}>불러오기</button>
             </div>
         )
     }

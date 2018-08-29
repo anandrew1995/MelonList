@@ -30,8 +30,9 @@ class Login extends React.Component {
         return (
             <div className='Login'>
                 {this.props.loggedIn ?
-                    <button onClick={this.props.logOut}>로그아웃</button> :
+                    <button className="btn btn-warning" onClick={this.props.logOut}>로그아웃</button> :
                     <img onClick={this.openGoogleOAuth}
+                        alt='btn_google_signin_dark_normal_web@2x.png'
                         src="btn_google_signin_dark_normal_web@2x.png">
                     </img>
                 }

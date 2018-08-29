@@ -27,7 +27,9 @@ class Export extends React.Component {
         axios.post(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet`, body, { headers })
         .then((res) => {
             console.log(`${songs[index].rank}. ${songs[index].title} was added to the playlist`);
-            this.addVideoToPlaylist(songs, index+1, playlistId);
+            if (songs.length > index) {
+                this.addVideoToPlaylist(songs, index+1, playlistId);
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -78,7 +80,7 @@ class Export extends React.Component {
     render() {
         return (
             <div>
-                <button onClick={this.exportToPlaylist}>내 유투브 플레이리스트로 보내기</button>
+                <button className="btn btn-primary" onClick={this.exportToPlaylist}>내 유투브 플레이리스트로 보내기</button>
             </div>
         )
     }
