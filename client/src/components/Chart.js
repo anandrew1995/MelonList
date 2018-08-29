@@ -11,27 +11,31 @@ class Chart extends React.Component {
             <div className='Chart'>
                 <h1>멜론 TOP 100</h1>
                 <Filters retrieveChart={this.props.retrieveChart}/>
-                {this.props.updatedDate ? <div>{this.props.updatedDate}</div> : null}
-                {this.props.songs.length > 0 ? null : <Loader/>}
-                <table>
-                    <tbody>
-                        {this.props.songs.length > 0 ? <tr><th>순위</th><th>제목</th><th>가수</th><th>유투브 링크</th></tr> : null}
-                        {this.props.songs ?
-                            this.props.songs.map((song) => (
-                            <tr key={song.rank}>
-                                <td>{song.rank}</td>
-                                <td>{song.title}</td>
-                                <td>{song.artist}</td>
-                                <td>
-                                    <a href={'https://www.youtube.com/watch?v='+song.videoId} target="_blank" >
-                                        {song.videoTitle.length > 20 ? `${song.videoTitle.substring(0,20)}...` : song.videoTitle}
-                                    </a>
-                                </td>
-                            </tr>
-                        )) : null}
-                    </tbody>
-                </table>
-                {this.props.retrievedDate ? <div>차트 업데이트: {this.props.retrievedDate}</div> : null}
+                {
+                    this.props.chart.songs.length > 0 ?
+                    <div className='table'>
+                        <div className='updatedDate'>{this.props.chart.updatedMelonDate}</div>
+                        <table>
+                            <tbody>
+                                <tr><th>순위</th><th>제목</th><th>가수</th><th>유투브 링크</th></tr>
+                                {this.props.chart.songs.map((song) => (
+                                    <tr key={song.rank}>
+                                        <td>{song.rank}</td>
+                                        <td>{song.title}</td>
+                                        <td>{song.artist}</td>
+                                        <td>
+                                            <a href={'https://www.youtube.com/watch?v='+song.videoId} target="_blank" >
+                                                {song.videoTitle.length > 20 ? `${song.videoTitle.substring(0,20)}...` : song.videoTitle}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    : <Loader/>
+                }
+                {this.props.chart.retrievedMelonDate ? <div>차트 업데이트: {this.props.chart.retrievedMelonDate}</div> : null}
             </div>
         )
     }

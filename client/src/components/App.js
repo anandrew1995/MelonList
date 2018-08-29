@@ -11,21 +11,20 @@ class App extends React.Component {
     constructor() {
         super();
         this.state = {
-            songs: [],
-            retrievedDate: '',
+            chart: {
+                songs: []
+            },
             loggedIn: false
         };
         this.retrieveChart = this.retrieveChart.bind(this);
         this.logOut = this.logOut.bind(this);
     }
     retrieveChart(chartType, classCd) {
-        this.setState({songs: [], updatedDate: '', retrievedDate: '', chartType, classCd });
+        this.setState({ chart: {songs: [], updatedDate: '', retrievedDate: '', chartType, classCd }});
         axios.get('/api/charts', { params: { chartType, classCd } })
         .then((res) => {
             this.setState({
-                songs: res.data.songs,
-                retrievedDate: res.data.retrievedMelonDate,
-                updatedDate: res.data.updatedMelonDate
+                chart: res.data
             });
         })
         .catch((error) => {
@@ -43,12 +42,9 @@ class App extends React.Component {
             <div className='App'>
                 <div className='header'>
                     <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
-                    {this.state.loggedIn ? <Export chartType={this.state.chartType} classCd={this.state.classCd}
-                        updatedDate={this.state.updatedDate} retrievedDate={this.state.retrievedDate}
-                        songs={this.state.songs} logOut={this.logOut}/> : null}
+                    {this.state.loggedIn ? <Export chart={this.state.chart} logOut={this.logOut}/> : null}
                 </div>
-                <Chart retrieveChart={this.retrieveChart} updatedDate={this.state.updatedDate}
-                    retrievedDate={this.state.retrievedDate} songs={this.state.songs}/>
+                <Chart retrieveChart={this.retrieveChart} chart={this.state.chart}/>
             </div>
         );
     }

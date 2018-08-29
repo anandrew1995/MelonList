@@ -38,12 +38,12 @@ class Export extends React.Component {
         let classCd = '';
         for (const filter of MelonFilters) {
             // console.log(filter);
-            if (filter.chartType === this.props.chartType) {
+            if (filter.chartType === this.props.chart.chartType) {
                 chartType = filter.name;
             }
             if (filter.genres) {
                 for (const genre of filter.genres) {
-                    if (genre.classCd === this.props.classCd) {
+                    if (genre.classCd === this.props.chart.classCd) {
                         classCd = genre.name;
                     }
                 }
@@ -51,7 +51,7 @@ class Export extends React.Component {
         };
         const body = {
             snippet: {
-                title: `멜론 ${chartType} TOP 100 (${classCd}) - ${this.props.updatedDate}`,
+                title: `멜론 ${chartType} TOP 100 (${classCd}) - ${this.props.chart.updatedMelonDate}`,
                 description: 'By Melonizer'
             }
         };
@@ -61,7 +61,7 @@ class Export extends React.Component {
 
         axios.post(`https://www.googleapis.com/youtube/v3/playlists?part=snippet`, body, { headers })
         .then((res) => {
-            this.addVideoToPlaylist(this.props.songs, 0, 'PLLUPZt--IbzRCf5Uc24yeJMAjz05FQt0X');
+            this.addVideoToPlaylist(this.props.chart.songs, 0, res.data.id);
         })
         .catch((error) => {
             if (error.response.status === 401) {
@@ -69,7 +69,7 @@ class Export extends React.Component {
                 this.props.logOut();
             }
             if (error.response.status === 403) {
-                alert("Too many requests, wait awhile.");
+                alert("You may have created too many playlists. Try again later.");
                 this.props.logOut();
             }
             console.log(error);

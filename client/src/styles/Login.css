@@ -1,3 +1,11 @@
 .Login {
     align-self: center;
 }
+
+img {
+    height: 40px;
+}
+
+img:hover {
+    cursor: pointer;
+}

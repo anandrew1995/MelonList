@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import config from '../config';
-// import '../styles/Login.css';
+import '../styles/Login.css';
 
 class Login extends React.Component {
     constructor() {
@@ -29,7 +29,12 @@ class Login extends React.Component {
     render() {
         return (
             <div className='Login'>
-                {this.props.loggedIn ? <button onClick={this.props.logOut}>로그아웃</button> : <button onClick={this.openGoogleOAuth}>Login with Google</button>}
+                {this.props.loggedIn ?
+                    <button onClick={this.props.logOut}>로그아웃</button> :
+                    <img onClick={this.openGoogleOAuth}
+                        src="btn_google_signin_dark_normal_web@2x.png">
+                    </img>
+                }
             </div>
         )
     }
