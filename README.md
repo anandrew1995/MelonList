@@ -1,4 +1,4 @@
 # Melonizer
 Crawls and parses the Melon charts and creates private Youtube playlists.
 
-NOTE: There is a rate limit with the playlist generation.
+After signing in and generating a playlist, use Youtube Music, Youtube (Premium), or third-party YouTube players to listen.
