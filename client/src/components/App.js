@@ -5,7 +5,6 @@ import '../styles/App.css';
 
 import Login from './Login';
 import Filters from './Filters';
-import Export from './Export';
 import Chart from './Chart';
 
 class App extends React.Component {
@@ -34,6 +33,7 @@ class App extends React.Component {
     }
     logOut() {
         sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('name');
         this.setState({
             loggedIn: false
         });
@@ -43,9 +43,9 @@ class App extends React.Component {
             <div className='App'>
                 <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
                 <h1>멜론 TOP 100</h1>
-                <Filters retrieveChart={this.retrieveChart}/>
+                <Filters retrieveChart={this.retrieveChart} chart={this.state.chart}
+                    logOut={this.logOut}/>
                 <Chart chart={this.state.chart}/>
-                {this.state.loggedIn ? <Export chart={this.state.chart} logOut={this.logOut}/> : null}
             </div>
         );
     }

@@ -1,4 +1,7 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
+
+import Export from './Export';
 
 import MelonFilters from '../melonFilters';
 import '../styles/Filters.css';
@@ -36,30 +39,39 @@ class Filters extends React.Component {
                     <div>
                         {this.state.filters.filter((filter) => (filter.hasOwnProperty('chartType'))).map((period) => (
                             <div className='filterItem' key={period.chartType}>
-                                <input type='radio' name='chartType' value={period.chartType}
-                                    checked={period.chartType === this.state.chartType}
-                                    onChange={this.setChartType}/>
-                                {period.name}
+                                <label>
+                                    <input type='radio' name='chartType' value={period.chartType}
+                                        checked={period.chartType === this.state.chartType}
+                                        onChange={this.setChartType}/>
+                                    {period.name}
+                                </label>
                             </div>
                         ))}
                     </div>
                 </div>
+                <div className='line'></div>
                 {this.state.filters.filter((filter) => (filter.hasOwnProperty('genres'))).map((filterType) => (
                     <div className='filter' key={filterType.name}>
                         <div className='filterName'>{filterType.name}</div>
                         <div>
                             {filterType.genres.map((filter) => (
                                 <div className='filterItem' key={filter.classCd}>
-                                    <input type='radio' name='genre' value={filter.classCd}
-                                        checked={filter.classCd === this.state.classCd}
-                                        onChange={this.setClassCd}/>
-                                    {filter.name}
+                                    <label>
+                                        <input type='radio' name='genre' value={filter.classCd}
+                                            checked={filter.classCd === this.state.classCd}
+                                            onChange={this.setClassCd}/>
+                                        {filter.name}
+                                    </label>
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
-                <button className='retrieve btn btn-secondary' onClick={this.retrieveChart}>불러오기</button>
+                <div className='buttons'>
+                    <Button bsStyle='info' onClick={this.retrieveChart}>불러오기</Button>
+                    {sessionStorage.authToken ?
+                        <Export chart={this.props.chart} logOut={this.props.logOut}/> : null}
+                </div>
             </div>
         )
     }

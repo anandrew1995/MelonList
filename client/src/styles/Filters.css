@@ -7,12 +7,14 @@
 .filter {
     display: flex;
     flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .filterName {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
     width: 100px;
 }
 
@@ -20,13 +22,24 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .filterItem {
     margin-left: 10px;
 }
 
-.retrieve {
+input[type='radio'] {
+    margin-right: 10px;
+}
+
+.buttons {
     margin-top: 20px;
-    align-self: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.line {
+    border-bottom: 1px grey solid;
+    margin-bottom: 5px;
 }

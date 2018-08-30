@@ -21,7 +21,7 @@ class Chart extends React.Component {
                                         <td>{song.title}</td>
                                         <td>{song.artist}</td>
                                         <td>
-                                            <a href={'https://www.youtube.com/watch?v='+song.videoId} target="_blank" >
+                                            <a href={'https://www.youtube.com/watch?v='+song.videoId} target='_blank' >
                                                 {song.videoTitle.length > 20 ? `${song.videoTitle.substring(0,20)}...` : song.videoTitle}
                                             </a>
                                         </td>

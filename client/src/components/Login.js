@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 import config from '../config';
 import '../styles/Login.css';
@@ -14,7 +15,7 @@ class Login extends React.Component {
         this.openGoogleOAuth = this.openGoogleOAuth.bind(this);
     }
     openGoogleOAuth() {
-        // window.open(this.state.signInUrl, "_blank", "scrollbars=yes,top=150,left=500,width=500,height=400");
+        // window.open(this.state.signInUrl, '_blank', 'scrollbars=yes,top=150,left=500,width=500,height=400');
         window.location = this.state.signInUrl;
     }
     parseAuthCode(url) {
@@ -30,10 +31,12 @@ class Login extends React.Component {
         return (
             <div className='Login'>
                 {this.props.loggedIn ?
-                    <button className="btn btn-warning" onClick={this.props.logOut}>로그아웃</button> :
+                    <Button bsStyle='warning' onClick={this.props.logOut}>
+                        {sessionStorage.name}, 로그아웃
+                    </Button> :
                     <img onClick={this.openGoogleOAuth}
                         alt='btn_google_signin_dark_normal_web@2x.png'
-                        src="btn_google_signin_dark_normal_web@2x.png">
+                        src='btn_google_signin_dark_normal_web@2x.png'>
                     </img>
                 }
             </div>
@@ -46,8 +49,21 @@ class Login extends React.Component {
             .then((res) => {
                 if (res.data.aud === this.state.clientId) {
                     sessionStorage.setItem('authToken', tokenObj.access_token);
+                    const headers = {
+                        Authorization: `Bearer ${sessionStorage.authToken}`
+                    };
+                    axios.get(`https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true`, { headers })
+                    .then((res) => {
+                        sessionStorage.setItem('name', res.data.items[0].snippet.title);
+                        window.location = '/';
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
                 }
-                window.location = '/'
+            })
+            .catch((error) => {
+                console.log(error);
             });
         }
         this.setState({
