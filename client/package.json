@@ -6,7 +6,9 @@
         "ajv": "^6.5.3",
         "axios": "^0.18.0",
         "react": "^16.4.2",
+        "react-bootstrap": "^0.32.3",
         "react-dom": "^16.4.2",
+        "react-modal": "^3.5.1",
         "react-scripts": "1.1.5",
         "redux": "^4.0.0"
     },
