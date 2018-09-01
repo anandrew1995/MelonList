@@ -7,6 +7,8 @@ import Login from './Login';
 import Filters from './Filters';
 import Chart from './Chart';
 
+import favicon from '../images/favicon.png';
+
 class App extends React.Component {
     constructor() {
         super();
@@ -42,7 +44,11 @@ class App extends React.Component {
         return (
             <div className='App'>
                 <div className='header'>
-                    <h1>Melonizer</h1>
+                    <div className='logo'>
+                        <img src={favicon}/>
+                        <h1>Melonizer</h1>
+                        <img src={favicon}/>
+                    </div>
                     <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
                 </div>
                 <h2>멜론 TOP 100</h2>

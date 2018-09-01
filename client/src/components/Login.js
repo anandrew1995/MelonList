@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 
 import config from '../config';
 import '../styles/Login.css';
+
 import signInImg from '../images/btn_google_signin_dark_normal_web@2x.png';
 
 class Login extends React.Component {
