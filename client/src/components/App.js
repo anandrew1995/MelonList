@@ -41,8 +41,11 @@ class App extends React.Component {
     render() {
         return (
             <div className='App'>
-                <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
-                <h1>멜론 TOP 100</h1>
+                <div className='header'>
+                    <h1>Melonizer</h1>
+                    <Login loggedIn={this.state.loggedIn} logOut={this.logOut}/>
+                </div>
+                <h2>멜론 TOP 100</h2>
                 <Filters retrieveChart={this.retrieveChart} chart={this.state.chart}
                     logOut={this.logOut}/>
                 <Chart chart={this.state.chart}/>

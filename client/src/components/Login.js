@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 
 import config from '../config';
 import '../styles/Login.css';
+import signInImg from '../images/btn_google_signin_dark_normal_web@2x.png';
 
 class Login extends React.Component {
     constructor() {
@@ -36,14 +37,14 @@ class Login extends React.Component {
                     </Button> :
                     <img onClick={this.openGoogleOAuth}
                         alt='btn_google_signin_dark_normal_web@2x.png'
-                        src='btn_google_signin_dark_normal_web@2x.png'>
+                        src={signInImg}>
                     </img>
                 }
             </div>
         )
     }
     componentDidMount() {
-        if (window.location.href.includes('callback')) {
+        if (window.location.href.includes('#access_token')) {
             const tokenObj = this.parseAuthCode(window.location.href);
             axios.get(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${tokenObj.access_token}`)
             .then((res) => {
@@ -68,7 +69,7 @@ class Login extends React.Component {
         }
         this.setState({
             signInUrl: `https://accounts.google.com/o/oauth2/v2/auth?client_id=${this.state.clientId}&` +
-                'redirect_uri=http://localhost:3001/callback&response_type=token&' +
+                'redirect_uri=http://localhost:3000&response_type=token&' +
                 'scope=https://www.googleapis.com/auth/youtube'
         });
     }

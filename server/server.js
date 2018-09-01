@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const RateLimit = require('express-rate-limit');
 
 const config = require('./config');
+const index = require('./routes/index');
 const charts = require('./routes/charts');
 // const users = './routes/users';
 
@@ -33,7 +34,7 @@ app.use(morgan('dev'));
 
 console.log(__dirname);
 //View Engine
-app.use(express.static(path.join(__dirname, '../client/public')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 app.set('view engine', 'html');
 
 //Body Parser Middleware
@@ -48,6 +49,7 @@ var limiter = new RateLimit({
 });
 app.use(limiter);
 
+app.use('/', index);
 app.use('/api/charts', charts);
 
 app.use((req, res, next) => {
