@@ -33,6 +33,8 @@ class ExportModal extends React.Component {
     constructor() {
         super();
         this.state = {
+            chartType: '',
+            classCd: '',
             exportType: 'new',
             existingType: 'reset',
             playlistId: '',
@@ -68,12 +70,12 @@ class ExportModal extends React.Component {
                 this.setState({
                     exportStatus: ''
                 });
-                // if (this.state.existingType === 'reset') {
-                //     console.log('not implemented');
-                // }
-                // else if (this.state.existingType === 'prepend') {
-                //     this.props.addVideoToPlaylist(0, this.state.playlistId)
-                // }
+                if (this.state.existingType === 'reset') {
+                    this.props.removeVideoFromPlaylist(this.state.playlistId);
+                }
+                else if (this.state.existingType === 'prepend') {
+                    this.props.addVideoToPlaylist(0, this.state.playlistId)
+                }
             }
             else {
                 this.setState({
@@ -92,6 +94,7 @@ class ExportModal extends React.Component {
                 onRequestClose={this.props.close}
                 style={customStyles}>
                 <h1>유투브 플레이리스트로 보내기</h1>
+                <div>새로운 플레이리스트 제목: {this.props.playlistTitle}</div>
                 <div className='section'>
                     <label>
                         <input type='radio' name='exportType' value='new'
@@ -118,7 +121,7 @@ class ExportModal extends React.Component {
                                 <input type='radio' name='existingType' value='reset'
                                     onChange={this.setExistingType} checked={this.state.existingType === 'reset'}
                                     disabled={this.state.exportType === 'new'}/>
-                                해당 플레이리스트 비디오 모두 제거 후 보내기
+                                해당 플레이리스트 비디오 모두 제거 후 보내기 (위 제목으로 변경)
                             </label>
                         </div>
                         <div>
@@ -126,13 +129,14 @@ class ExportModal extends React.Component {
                                 <input type='radio' name='existingType' value='prepend'
                                 onChange={this.setExistingType} checked={this.state.existingType === 'prepend'}
                                     disabled={this.state.exportType === 'new'}/>
-                                해당 플레이리스트 비디오 유지 후 그 앞으로 보내기
+                                해당 플레이리스트 비디오 유지. 모든 비디오 앞으로 보내기
                             </label>
                         </div>
                     </div>
                 </div>
                 <Button className='section wide' bsStyle='primary' onClick={this.export}>보내기</Button>
-                <ProgressBar className='section wide' bsStyle='success' active now={this.props.exportComplete}/>
+                <ProgressBar className='section wide' bsStyle='success' label={this.props.exportComplete > 0 ? 'Exporting' : (this.props.removingVideos ? 'Deleting': '')}
+                    active now={this.props.exportComplete || (this.props.removingVideos ? 100 : 0)}/>
                 {this.props.exportComplete === 100 ? <div>완료!</div> : <div>{this.state.exportStatus}</div>}
             </Modal>
         )

@@ -12,11 +12,14 @@ class Export extends React.Component {
         super(props);
         this.state = {
             exportModalOpen: false,
-            exportComplete: 0
+            exportComplete: 0,
+            playlistTitle: '',
+            removingVideos: false
         }
         this.getChartTypeClassCdStr = this.getChartTypeClassCdStr.bind(this);
         this.addVideoToPlaylist = this.addVideoToPlaylist.bind(this);
         this.exportToPlaylist = this.exportToPlaylist.bind(this);
+        this.removeVideoFromPlaylist = this.removeVideoFromPlaylist.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
     }
@@ -97,8 +100,47 @@ class Export extends React.Component {
             console.log(error);
         });
     }
+    removeVideoFromPlaylist(playlistId) {
+        const headers = {
+            Authorization: `Bearer ${sessionStorage.authToken}`
+        };
+        const params = {
+            part: 'snippet',
+            maxResults: 1,
+            playlistId
+        }
+        axios.get(`https://www.googleapis.com/youtube/v3/playlistItems`, { params, headers })
+        .then((res) => {
+            if (res.data.items.length > 0) {
+                axios.delete(`https://www.googleapis.com/youtube/v3/playlistItems?id=${res.data.items[0].id}`, { headers })
+                .then(() => {
+                    console.log(`Deleted ${res.data.items[0].snippet.title}`);
+                    this.setState({
+                        removingVideos: true
+                    });
+                    this.removeVideoFromPlaylist(playlistId);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            }
+            else {
+                this.setState({
+                    removingVideos: false
+                });
+                this.addVideoToPlaylist(0, playlistId);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
     openModal() {
-        this.setState({exportModalOpen: true});
+        const { chartType, classCd } = this.getChartTypeClassCdStr();
+        this.setState({
+            exportModalOpen: true,
+            playlistTitle: `멜론 ${chartType} TOP 100 (${classCd}) - ${this.props.chart.updatedMelonDate}`
+        });
         if (this.state.exportComplete === 100) {
             this.setState({
                 exportComplete: 0
@@ -113,7 +155,9 @@ class Export extends React.Component {
             <div className='Export'>
                 <ExportModal isOpen={this.state.exportModalOpen} open={this.openModal} close={this.closeModal}
                     exportToPlaylist={this.exportToPlaylist} addVideoToPlaylist={this.addVideoToPlaylist}
-                    exportComplete={this.state.exportComplete}/>
+                    removeVideoFromPlaylist={this.removeVideoFromPlaylist}
+                    exportComplete={this.state.exportComplete} removingVideos={this.state.removingVideos}
+                    playlistTitle={this.state.playlistTitle}/>
                 <Button bsStyle='primary' onClick={this.openModal}>내 유투브 플레이리스트로 보내기</Button>
             </div>
         )
