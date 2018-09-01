@@ -22,6 +22,7 @@ class Export extends React.Component {
         this.removeVideoFromPlaylist = this.removeVideoFromPlaylist.bind(this);
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.checkErrorAndLogOut = this.checkErrorAndLogOut.bind(this);
     }
     getChartTypeClassCdStr() {
         let chartType = '';
@@ -70,6 +71,7 @@ class Export extends React.Component {
             }
         })
         .catch((error) => {
+            this.checkErrorAndLogOut(error);
             console.log(error);
         });
     }
@@ -80,7 +82,7 @@ class Export extends React.Component {
         };
         const body = {
             snippet: {
-                title: `멜론 ${chartType} TOP 100 (${classCd}) - ${this.props.chart.updatedMelonDate}`,
+                title: this.state.playlistTitle,
                 description: 'By Melonizer'
             }
         };
@@ -89,14 +91,7 @@ class Export extends React.Component {
             this.addVideoToPlaylist(0, res.data.id);
         })
         .catch((error) => {
-            if (error.response.status === 401) {
-                alert('Session Expired, logging out...');
-                this.props.logOut();
-            }
-            if (error.response.status === 403) {
-                alert('You may have created too many playlists. Try again later.');
-                this.props.logOut();
-            }
+            this.checkErrorAndLogOut(error);
             console.log(error);
         });
     }
@@ -128,10 +123,28 @@ class Export extends React.Component {
                 this.setState({
                     removingVideos: false
                 });
-                this.addVideoToPlaylist(0, playlistId);
+                const body = {
+                    id: playlistId,
+                    snippet: {
+                        title: this.state.playlistTitle,
+                        description: 'By Melonizer'
+                    },
+                    status: {
+                        privacyStatus: 'private'
+                    }
+                }
+                axios.put(`https://www.googleapis.com/youtube/v3/playlists?part=snippet,status`, body, { headers })
+                .then(() => {
+                    console.log(`Renamed to ${this.state.playlistTitle}`);
+                    this.addVideoToPlaylist(0, playlistId);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             }
         })
         .catch((error) => {
+            this.checkErrorAndLogOut(error);
             console.log(error);
         });
     }
@@ -149,6 +162,16 @@ class Export extends React.Component {
     }
     closeModal() {
         this.setState({exportModalOpen: false});
+    }
+    checkErrorAndLogOut(error) {
+        if (error.response.status === 401) {
+            alert('Session Expired, logging out...');
+            this.props.logOut();
+        }
+        if (error.response.status === 403) {
+            alert('You may have created too many playlists. Try again later.');
+            this.props.logOut();
+        }
     }
     render() {
         return (
