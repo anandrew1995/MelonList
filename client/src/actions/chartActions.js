@@ -36,7 +36,7 @@ export function fetchChart(chartType, classCd) {
             };
             dispatch({ type: 'UPDATE_CHART', payload: {
                 ...res.data,
-                playlistTitle: `멜론 ${chartTypeConverted} TOP 100 (${classCdConverted}) - ${res.data.updatedDate}`
+                playlistTitle: `멜론 ${chartTypeConverted} TOP 100 (${classCdConverted}) - ${res.data.chartDate}`
             }});
         })
         .catch((error) => {

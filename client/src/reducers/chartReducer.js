@@ -3,7 +3,7 @@ export default function reducer(state = {
     classCd: 'GN0000',
     playlistTitle: '',
     songs: [],
-    updatedDate: '',
+    chartDate: '',
     retrievedDate: ''
 }, action) {
     switch(action.type) {
@@ -16,7 +16,7 @@ export default function reducer(state = {
             return {
                 ...state,
                 songs: [],
-                updatedDate: '',
+                chartDate: '',
                 retrievedDate: ''
             }
         default:

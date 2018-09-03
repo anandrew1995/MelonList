@@ -35,7 +35,7 @@ const ChartSchema = new Schema({
 			required: true
 		}
     }],
-	updatedDate: { type: String },
+	chartDate: { type: String },
 	retrievedDate: { type: String }
 });
 
