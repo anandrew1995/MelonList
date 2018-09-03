@@ -1,35 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-import Export from './Export';
+import Exporter from './Exporter';
+
+import * as chartActions from '../actions/chartActions';
+import * as userActions from '../actions/userActions';
 
 import MelonFilters from '../melonFilters';
 import '../styles/Filters.css';
 
 class Filters extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            filters: MelonFilters,
-            chartType: 'month',
-            classCd: 'GN0000'
-        };
+    constructor() {
+        super();
+        this.retrieveChart = this.retrieveChart.bind(this);
         this.setChartType = this.setChartType.bind(this);
         this.setClassCd = this.setClassCd.bind(this);
-        this.retrieveChart = this.retrieveChart.bind(this);
-    }
-    setChartType(e) {
-        this.setState({
-            chartType: e.currentTarget.value
-        });
-    }
-    setClassCd(e) {
-        this.setState({
-            classCd: e.currentTarget.value
-        });
+        this.logOut = this.logOut.bind(this);
     }
     retrieveChart() {
-        this.props.retrieveChart(this.state.chartType, this.state.classCd);
+        this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd));
+    }
+    setChartType(e) {
+        this.props.dispatch(chartActions.updateChart({ chartType: e.currentTarget.value }));
+    }
+    setClassCd(e) {
+        this.props.dispatch(chartActions.updateChart({ classCd: e.currentTarget.value }));
+    }
+    logOut() {
+        this.props.dispatch(userActions.logOut());
     }
     render() {
         return (
@@ -37,11 +36,11 @@ class Filters extends React.Component {
                 <div className='filter'>
                     <div className='filterName'>차트 기간</div>
                     <div>
-                        {this.state.filters.filter((filter) => (filter.hasOwnProperty('chartType'))).map((period) => (
+                        {MelonFilters.filter((filter) => (filter.hasOwnProperty('chartType'))).map((period) => (
                             <div className='filterItem' key={period.chartType}>
                                 <label>
                                     <input type='radio' name='chartType' value={period.chartType}
-                                        checked={period.chartType === this.state.chartType}
+                                        checked={period.chartType === this.props.chart.chartType}
                                         onChange={this.setChartType}/>
                                     {period.name}
                                 </label>
@@ -50,7 +49,7 @@ class Filters extends React.Component {
                     </div>
                 </div>
                 <div className='line'></div>
-                {this.state.filters.filter((filter) => (filter.hasOwnProperty('genres'))).map((filterType) => (
+                {MelonFilters.filter((filter) => (filter.hasOwnProperty('genres'))).map((filterType) => (
                     <div className='filter' key={filterType.name}>
                         <div className='filterName'>{filterType.name}</div>
                         <div>
@@ -58,7 +57,7 @@ class Filters extends React.Component {
                                 <div className='filterItem' key={filter.classCd}>
                                     <label>
                                         <input type='radio' name='genre' value={filter.classCd}
-                                            checked={filter.classCd === this.state.classCd}
+                                            checked={filter.classCd === this.props.chart.classCd}
                                             onChange={this.setClassCd}/>
                                         {filter.name}
                                     </label>
@@ -69,15 +68,19 @@ class Filters extends React.Component {
                 ))}
                 <div className='buttons'>
                     <Button bsStyle='info' onClick={this.retrieveChart}>불러오기</Button>
-                    {sessionStorage.authToken ?
-                        <Export chart={this.props.chart} logOut={this.props.logOut}/> : null}
+                    {this.props.user.loggedIn ?
+                        <Exporter/> : null}
                 </div>
             </div>
         )
     }
-    componentDidMount() {
-        this.retrieveChart();
-    }
 }
 
-export default Filters;
+const mapStateToProps = (store) => {
+    return {
+        chart: store.chart,
+        user: store.user
+    };
+}
+
+export default connect(mapStateToProps)(Filters);

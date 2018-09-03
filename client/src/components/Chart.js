@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import '../styles/Chart.css';
 
-import Loader from './Loader';
+import * as chartActions from '../actions/chartActions';
 
 class Chart extends React.Component {
     render() {
@@ -11,7 +12,7 @@ class Chart extends React.Component {
                 {
                     this.props.chart.songs.length > 0 ?
                     <div className='table'>
-                        <div className='updatedDate'>{this.props.chart.updatedMelonDate}</div>
+                        <div className='tableTitle'>{this.props.chart.playlistTitle}</div>
                         <table>
                             <tbody>
                                 <tr><th>순위</th><th>제목</th><th>가수</th><th>유투브 링크</th></tr>
@@ -30,12 +31,21 @@ class Chart extends React.Component {
                             </tbody>
                         </table>
                     </div>
-                    : <Loader/>
+                    : <div>로딩중...</div>
                 }
-                {this.props.chart.retrievedMelonDate ? <div>차트 업데이트: {this.props.chart.retrievedMelonDate}</div> : null}
+                {this.props.chart.retrievedDate ? <div>차트 업데이트: {this.props.chart.retrievedDate}</div> : null}
             </div>
         )
     }
+    componentDidMount() {
+        this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd));
+    }
 }
 
-export default Chart;
+const mapStateToProps = (store) => {
+    return {
+        chart: store.chart
+    };
+}
+
+export default connect(mapStateToProps)(Chart);
