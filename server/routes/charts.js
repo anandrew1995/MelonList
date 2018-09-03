@@ -21,29 +21,26 @@ daily: every day at 14:00
 router.get('/', (req, res) => {
     let chartType = req.query.chartType || '';
     let classCd = req.query.classCd || 'GN0000';
-    Chart.findOne({ classCd, chartType }, (err, chart) => {
+    let lastUpdateDate = moment().tz('Asia/Seoul');
+    switch(chartType) {
+        case 'month':
+            lastUpdateDate = (lastUpdateDate.date() === 1 && lastUpdateDate.hour() >= 14) || lastUpdateDate.date() > 1 ?
+                lastUpdateDate.startOf('month').add(14, 'hours') : lastUpdateDate.startOf('month').subtract(1, 'months').add(14, 'hours');
+            break;
+        case 'week':
+            lastUpdateDate = (lastUpdateDate.day() === 2 && lastUpdateDate.hour() >= 14) || lastUpdateDate.day() > 2 ?
+                lastUpdateDate.startOf('week').add(2, 'days').add(14, 'hours') : lastUpdateDate.startOf('week').subtract(5, 'days').add(14, 'hours');
+            break;
+        case 'day':
+            lastUpdateDate = lastUpdateDate.hour() >= 14 ?
+                lastUpdateDate.startOf('day').add(14, 'hours') : lastUpdateDate.startOf('day').subtract(1, 'days').add(14, 'hours');
+            break;
+        default:
+            break;
+    }
+    Chart.findOne({ classCd, chartType, retrievedDate: lastUpdateDate }, (err, chart) => {
         if (err) throw err;
-        const currentDate = moment().tz('Asia/Seoul');
-        let lastUpdateDate = moment().tz('Asia/Seoul');
-        let shouldUpdate = false;
-        switch(chartType) {
-            case 'month':
-                lastUpdateDate = (lastUpdateDate.date() === 1 && lastUpdateDate.hour() >= 14) || lastUpdateDate.date() > 1 ?
-                    lastUpdateDate.startOf('month').add(14, 'hours') : lastUpdateDate.startOf('month').subtract(1, 'months').add(14, 'hours');
-                break;
-            case 'week':
-                lastUpdateDate = (lastUpdateDate.day() === 2 && lastUpdateDate.hour() >= 14) || lastUpdateDate.day() > 2 ?
-                    lastUpdateDate.startOf('week').add(2, 'days').add(14, 'hours') : lastUpdateDate.startOf('week').subtract(5, 'days').add(14, 'hours');
-                break;
-            case 'day':
-                lastUpdateDate = lastUpdateDate.hour() >= 14 ?
-                    lastUpdateDate.startOf('day').add(14, 'hours') : lastUpdateDate.startOf('day').subtract(1, 'days').add(14, 'hours');
-                break;
-            default:
-                break;
-        }
-        shouldUpdate = chart ? lastUpdateDate.isAfter(chart.retrievedDate) : false;
-        if (!chart || (chart && shouldUpdate)) {
+        if (!chart) {
             let url = `${endpoint}/${chartType}/index.htm`;
             // url = filter ? url + '?classCd=' + filter : url;
             return axios.get(url, { params: { classCd } })
@@ -76,7 +73,7 @@ router.get('/', (req, res) => {
                         songs[i].videoTitle = videoTitle;
                         counter++;
                         if (counter === numSongsOnChart) {
-                            const chart = new Chart({ classCd, chartType, songs, updatedDate: $('.yyyymmdd').text(), retrievedDate: lastUpdateDate });
+                            const chart = new Chart({ classCd, chartType, songs, chartDate: $('.yyyymmdd').text(), retrievedDate: lastUpdateDate });
                             chart.save();
                             res.send(chart);
                         }
