@@ -35,8 +35,8 @@ const ChartSchema = new Schema({
 			required: true
 		}
     }],
-	updatedMelonDate: { type: String },
-	retrievedMelonDate: { type: String }
+	updatedDate: { type: String },
+	retrievedDate: { type: String }
 });
 
 const Chart = mongoose.model('Chart', ChartSchema);

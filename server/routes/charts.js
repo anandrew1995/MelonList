@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
     let classCd = req.query.classCd || 'GN0000';
     Chart.findOne({ classCd, chartType }, (err, chart) => {
         if (err) throw err;
-        const currentMelonDate = moment().tz('Asia/Seoul');
+        const currentDate = moment().tz('Asia/Seoul');
         let lastUpdateDate = moment().tz('Asia/Seoul');
         let shouldUpdate = false;
         switch(chartType) {
@@ -42,7 +42,7 @@ router.get('/', (req, res) => {
             default:
                 break;
         }
-        shouldUpdate = chart ? lastUpdateDate.isAfter(chart.retrievedMelonDate) : false;
+        shouldUpdate = chart ? lastUpdateDate.isAfter(chart.retrievedDate) : false;
         if (!chart || (chart && shouldUpdate)) {
             let url = `${endpoint}/${chartType}/index.htm`;
             // url = filter ? url + '?classCd=' + filter : url;
@@ -76,7 +76,7 @@ router.get('/', (req, res) => {
                         songs[i].videoTitle = videoTitle;
                         counter++;
                         if (counter === numSongsOnChart) {
-                            const chart = new Chart({ classCd, chartType, songs, updatedMelonDate: $('.yyyymmdd').text(), retrievedMelonDate: lastUpdateDate });
+                            const chart = new Chart({ classCd, chartType, songs, updatedDate: $('.yyyymmdd').text(), retrievedDate: lastUpdateDate });
                             chart.save();
                             res.send(chart);
                         }
