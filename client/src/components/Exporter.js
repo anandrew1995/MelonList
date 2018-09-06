@@ -39,9 +39,7 @@ class Exporter extends React.Component {
         super();
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.setExportType = this.setExportType.bind(this);
-        this.setExistingType = this.setExistingType.bind(this);
-        this.setPlaylistId = this.setPlaylistId.bind(this);
+        this.inputHandler = this.inputHandler.bind(this);
         this.addVideoToPlaylist = this.addVideoToPlaylist.bind(this);
         this.exportToPlaylist = this.exportToPlaylist.bind(this);
         this.removeVideoFromPlaylist = this.removeVideoFromPlaylist.bind(this);
@@ -57,14 +55,8 @@ class Exporter extends React.Component {
     closeModal() {
         this.props.dispatch(exporterActions.updateExporter({ exporterModalOpen: false }));
     }
-    setExportType(e) {
-        this.props.dispatch(exporterActions.updateExporter({ exportType: e.currentTarget.value }));
-    }
-    setExistingType(e) {
-        this.props.dispatch(exporterActions.updateExporter({ existingType: e.currentTarget.value }));
-    }
-    setPlaylistId(e) {
-        this.props.dispatch(exporterActions.updateExporter({ playlistId: e.currentTarget.value }));
+    inputHandler(e) {
+        this.props.dispatch(exporterActions.updateExporter({ [e.target.name]: e.currentTarget.value }));
     }
     addVideoToPlaylist(index, playlistId) {
         const headers = {
@@ -209,14 +201,14 @@ class Exporter extends React.Component {
                     <div className='section'>
                         <label>
                             <input type='radio' name='exportType' value='new'
-                                onChange={this.setExportType} checked={this.props.exporter.exportType === 'new'}/>
+                                onChange={this.inputHandler} checked={this.props.exporter.exportType === 'new'}/>
                                 새로운 플레이리스트로 보내기 (주의: 제한 넘길시 24시간 동안 생성 불가)
                         </label>
                     </div>
                     <div className='section'>
                         <label>
                             <input type='radio' name='exportType' value='existing'
-                                onChange={this.setExportType} checked={this.props.exporter.exportType === 'existing'}/>
+                                onChange={this.inputHandler} checked={this.props.exporter.exportType === 'existing'}/>
                                 생성된 플레이리스트로 보내기 (위 방법이 안될시 유투브에서 직접 생성 후 추가):
                         </label>
                     </div>
@@ -224,13 +216,13 @@ class Exporter extends React.Component {
                         <div>플레이리스트 아이디</div>
                         <div>예) https://www.youtube.com/playlist?list=<b>PLkf04U4YkwwrjRvmY1wMtHQM5</b></div>
                         <FormControl type='text' name='playlistId'
-                            onChange={this.setPlaylistId} placeholder='PLkf04U4YkwwrjRvmY1wMtHQM5'
+                            onChange={this.inputHandler} placeholder='PLkf04U4YkwwrjRvmY1wMtHQM5'
                             disabled={this.props.exporter.exportType === 'new'}/>
                         <div>
                             <div>
                                 <label>
                                     <input type='radio' name='existingType' value='reset'
-                                        onChange={this.setExistingType} checked={this.props.exporter.existingType === 'reset'}
+                                        onChange={this.inputHandler} checked={this.props.exporter.existingType === 'reset'}
                                         disabled={this.props.exporter.exportType === 'new'}/>
                                     해당 플레이리스트 비디오 모두 제거 후 보내기 (위 제목으로 변경)
                                 </label>
@@ -238,7 +230,7 @@ class Exporter extends React.Component {
                             <div>
                                 <label>
                                     <input type='radio' name='existingType' value='prepend'
-                                    onChange={this.setExistingType} checked={this.props.exporter.existingType === 'prepend'}
+                                    onChange={this.inputHandler} checked={this.props.exporter.existingType === 'prepend'}
                                         disabled={this.props.exporter.exportType === 'new'}/>
                                     해당 플레이리스트 비디오 유지. 모든 비디오 앞으로 보내기
                                 </label>

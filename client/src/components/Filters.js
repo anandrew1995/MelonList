@@ -14,18 +14,14 @@ class Filters extends React.Component {
     constructor() {
         super();
         this.retrieveChart = this.retrieveChart.bind(this);
-        this.setChartType = this.setChartType.bind(this);
-        this.setClassCd = this.setClassCd.bind(this);
+        this.inputHandler = this.inputHandler.bind(this);
         this.logOut = this.logOut.bind(this);
     }
     retrieveChart() {
         this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd));
     }
-    setChartType(e) {
-        this.props.dispatch(chartActions.updateChart({ chartType: e.currentTarget.value }));
-    }
-    setClassCd(e) {
-        this.props.dispatch(chartActions.updateChart({ classCd: e.currentTarget.value }));
+    inputHandler(e) {
+        this.props.dispatch(chartActions.updateChart({ [e.target.name]: e.currentTarget.value }));
     }
     logOut() {
         this.props.dispatch(userActions.logOut());
@@ -41,7 +37,7 @@ class Filters extends React.Component {
                                 <label>
                                     <input type='radio' name='chartType' value={period.chartType}
                                         checked={period.chartType === this.props.chart.chartType}
-                                        onChange={this.setChartType}/>
+                                        onChange={this.inputHandler}/>
                                     {period.name}
                                 </label>
                             </div>
@@ -56,9 +52,9 @@ class Filters extends React.Component {
                             {filterType.genres.map((filter) => (
                                 <div className='filterItem' key={filter.classCd}>
                                     <label>
-                                        <input type='radio' name='genre' value={filter.classCd}
+                                        <input type='radio' name='classCd' value={filter.classCd}
                                             checked={filter.classCd === this.props.chart.classCd}
-                                            onChange={this.setClassCd}/>
+                                            onChange={this.inputHandler}/>
                                         {filter.name}
                                     </label>
                                 </div>
