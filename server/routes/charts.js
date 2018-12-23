@@ -4,6 +4,9 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const { google } = require('googleapis');
 const moment = require('moment-timezone');
+const fs = require('fs');
+const ytdl = require('ytdl-core');
+const ffmpeg = require('fluent-ffmpeg');
 
 const config = require('../config');
 
@@ -73,7 +76,7 @@ router.get('/', (req, res) => {
                         songs[i].videoTitle = videoTitle;
                         counter++;
                         if (counter === numSongsOnChart) {
-                            const chart = new Chart({ classCd, chartType, songs, chartDate: $('.yyyymmdd').text(), retrievedDate: lastUpdateDate });
+                            const chart = new Chart({ classCd, chartType, songs, chartDate: $('.yyyymmdd').text().trim(), retrievedDate: lastUpdateDate });
                             chart.save();
                             res.send(chart);
                         }
@@ -89,6 +92,70 @@ router.get('/', (req, res) => {
         }
     });
 });
+
+router.post('/download', (req, res) => {
+    const folder = `./${req.body.playlistTitle}`;
+    fs.mkdir(`${folder}-converted`, (err) => {
+        console.log('Folder already exists');
+    });
+    fs.mkdir(folder, (err) => {
+        if (err) {
+            res.send('Folder already exists')
+        }
+        else {
+            for (const song of req.body.songs) {
+                downloadYoutube(song, folder);
+            }
+            res.send('downloaded');
+        }
+    });
+
+    // ytdl.getInfo(req.body.song.videoId, (err, info) => {
+    //     if (err) throw err;
+    //     var audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+    //     console.log(audioFormats);
+    // });
+
+    // res.download(pathToFile);
+
+});
+
+router.get('/test', (req, res) => {
+    ytdl.getInfo('alEIYhyREmc', (err, info) => {
+        if (err) throw err;
+        const audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+        console.log(audioFormats);
+        const format = audioFormats[0].container;
+        ytdl('alEIYhyREmc', {
+            quality: 'highestaudio',
+            filter: 'audioonly'
+        })
+        .pipe(fs.createWriteStream(`./test/output.${format}`))
+        .on('finish', () => {
+            ffmpeg(`./test/output.${format}`)
+            .audioCodec('libmp3lame')
+            .save(`test/output.mp3`)
+            .on('error', (err) => { console.log("An Error occured: " + err); })
+        })
+    });
+
+})
+
+function downloadYoutube(song, folder) {
+    const fileName = `${song.title}-${song.artist}`;
+    const pathToFile = `${folder}/${fileName}.webm`;
+    ytdl(song.videoId, {
+        quality: 'highestaudio',
+        filter: 'audioonly'
+    })
+    .pipe(fs.createWriteStream(pathToFile))
+    .on('finish', () => {
+        ffmpeg(pathToFile)
+        .audioCodec('libmp3lame')
+        .save(`${folder}-converted/${fileName}.mp3`)
+        .on('error', (err) => { console.log("An Error occured: " + err); })
+    })
+}
 
 function searchYoutube(song) {
     const service = google.youtube({
