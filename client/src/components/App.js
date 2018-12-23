@@ -17,7 +17,7 @@ class App extends React.Component {
                 <div className='header'>
                     <div className='logo'>
                         <img src={favicon}/>
-                        <h1>Melonizer</h1>
+                        <h1>MelonList</h1>
                         <img src={favicon}/>
                     </div>
                     <Login/>

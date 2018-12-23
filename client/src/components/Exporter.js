@@ -95,7 +95,7 @@ class Exporter extends React.Component {
         const body = {
             snippet: {
                 title: this.props.chart.playlistTitle,
-                description: 'By Melonizer'
+                description: 'By MelonList'
             }
         };
         axios.post(`https://www.googleapis.com/youtube/v3/playlists?part=snippet`, body, { headers })
@@ -135,7 +135,7 @@ class Exporter extends React.Component {
                     id: playlistId,
                     snippet: {
                         title: this.props.chart.playlistTitle,
-                        description: 'By Melonizer'
+                        description: 'By MelonList'
                     },
                     status: {
                         privacyStatus: 'private'

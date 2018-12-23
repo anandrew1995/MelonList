@@ -1,5 +1,5 @@
 {
-    "name": "melonizer",
+    "name": "melonlist",
     "version": "1.0.0",
     "description": "",
     "main": "init.js",
@@ -8,14 +8,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ys27/Melonizer.git"
+        "url": "git+https://github.com/ys27/MelonList.git"
     },
     "author": "Andrew An",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/ys27/Melonizer/issues"
+        "url": "https://github.com/ys27/MelonList/issues"
     },
-    "homepage": "https://github.com/ys27/Melonizer#readme",
+    "homepage": "https://github.com/ys27/MelonList#readme",
     "dependencies": {
         "async": "^2.5.0",
         "axios": "^0.18.0",
