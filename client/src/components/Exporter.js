@@ -1,13 +1,13 @@
-import React from 'react';
-import Modal from 'react-modal';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { Button, ProgressBar, FormControl } from 'react-bootstrap';
+import React from 'react'
+import Modal from 'react-modal'
+import axios from 'axios'
+import { connect } from 'react-redux'
+import { Button, ProgressBar, FormControl } from 'react-bootstrap'
 
-import * as userActions from '../actions/userActions';
-import * as exporterActions from '../actions/exporterActions';
+import * as userActions from '../actions/userActions'
+import * as exporterActions from '../actions/exporterActions'
 
-import '../styles/Exporter.css';
+import '../styles/Exporter.css'
 
 const customStyles = {
     overlay: {
@@ -32,36 +32,36 @@ const customStyles = {
         outline: 'none',
         padding: '20px'
     }
-};
+}
 
 class Exporter extends React.Component {
     constructor() {
-        super();
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.inputHandler = this.inputHandler.bind(this);
-        this.addVideoToPlaylist = this.addVideoToPlaylist.bind(this);
-        this.exportToPlaylist = this.exportToPlaylist.bind(this);
-        this.removeVideoFromPlaylist = this.removeVideoFromPlaylist.bind(this);
-        this.checkErrorAndLogOut = this.checkErrorAndLogOut.bind(this);
-        this.export = this.export.bind(this);
+        super()
+        this.openModal = this.openModal.bind(this)
+        this.closeModal = this.closeModal.bind(this)
+        this.inputHandler = this.inputHandler.bind(this)
+        this.addVideoToPlaylist = this.addVideoToPlaylist.bind(this)
+        this.exportToPlaylist = this.exportToPlaylist.bind(this)
+        this.removeVideoFromPlaylist = this.removeVideoFromPlaylist.bind(this)
+        this.checkErrorAndLogOut = this.checkErrorAndLogOut.bind(this)
+        this.export = this.export.bind(this)
     }
     openModal() {
-        this.props.dispatch(exporterActions.updateExporter({ exporterModalOpen: true }));
+        this.props.dispatch(exporterActions.updateExporter({ exporterModalOpen: true }))
         if (this.props.exporter.exportComplete === 100) {
-            this.props.dispatch(exporterActions.updateExporter({ exportComplete: 0 }));
+            this.props.dispatch(exporterActions.updateExporter({ exportComplete: 0 }))
         }
     }
     closeModal() {
-        this.props.dispatch(exporterActions.updateExporter({ exporterModalOpen: false }));
+        this.props.dispatch(exporterActions.updateExporter({ exporterModalOpen: false }))
     }
     inputHandler(e) {
-        this.props.dispatch(exporterActions.updateExporter({ [e.target.name]: e.currentTarget.value }));
+        this.props.dispatch(exporterActions.updateExporter({ [e.target.name]: e.currentTarget.value }))
     }
     addVideoToPlaylist(index, playlistId) {
         const headers = {
             Authorization: `Bearer ${sessionStorage.authToken}`
-        };
+        }
         const body = {
             snippet: {
                 playlistId: playlistId,
@@ -74,43 +74,43 @@ class Exporter extends React.Component {
         }
         axios.post(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet`, body, { headers })
         .then((res) => {
-            console.log(`${this.props.chart.songs[index].rank}. ${this.props.chart.songs[index].title} was added to the playlist`);
-            this.props.dispatch(exporterActions.updateExporter({ exportComplete: this.props.exporter.exportComplete + 1 }));
+            console.log(`${this.props.chart.songs[index].rank}. ${this.props.chart.songs[index].title} was added to the playlist`)
+            this.props.dispatch(exporterActions.updateExporter({ exportComplete: this.props.exporter.exportComplete + 1 }))
             if (this.props.chart.songs.length - 1 > index) {
-                this.addVideoToPlaylist(index+1, playlistId);
+                this.addVideoToPlaylist(index+1, playlistId)
             }
             else {
-                this.props.dispatch(exporterActions.updateExporter({ exportComplete: 100 }));
+                this.props.dispatch(exporterActions.updateExporter({ exportComplete: 100 }))
             }
         })
         .catch((error) => {
-            this.checkErrorAndLogOut(error);
-            console.log(error);
-        });
+            this.checkErrorAndLogOut(error)
+            console.log(error)
+        })
     }
     exportToPlaylist() {
         const headers = {
             Authorization: `Bearer ${sessionStorage.authToken}`
-        };
+        }
         const body = {
             snippet: {
                 title: this.props.chart.playlistTitle,
                 description: 'By MelonList'
             }
-        };
+        }
         axios.post(`https://www.googleapis.com/youtube/v3/playlists?part=snippet`, body, { headers })
         .then((res) => {
-            this.addVideoToPlaylist(0, res.data.id);
+            this.addVideoToPlaylist(0, res.data.id)
         })
         .catch((error) => {
-            this.checkErrorAndLogOut(error);
-            console.log(error);
-        });
+            this.checkErrorAndLogOut(error)
+            console.log(error)
+        })
     }
     removeVideoFromPlaylist(playlistId) {
         const headers = {
             Authorization: `Bearer ${sessionStorage.authToken}`
-        };
+        }
         const params = {
             part: 'snippet',
             maxResults: 1,
@@ -121,16 +121,16 @@ class Exporter extends React.Component {
             if (res.data.items.length > 0) {
                 axios.delete(`https://www.googleapis.com/youtube/v3/playlistItems?id=${res.data.items[0].id}`, { headers })
                 .then(() => {
-                    console.log(`Deleted ${res.data.items[0].snippet.title}`);
-                    this.props.dispatch(exporterActions.updateExporter({ removingVideos: true }));
-                    this.removeVideoFromPlaylist(playlistId);
+                    console.log(`Deleted ${res.data.items[0].snippet.title}`)
+                    this.props.dispatch(exporterActions.updateExporter({ removingVideos: true }))
+                    this.removeVideoFromPlaylist(playlistId)
                 })
                 .catch((error) => {
-                    console.log(error);
-                });
+                    console.log(error)
+                })
             }
             else {
-                this.props.dispatch(exporterActions.updateExporter({ removingVideos: false }));
+                this.props.dispatch(exporterActions.updateExporter({ removingVideos: false }))
                 const body = {
                     id: playlistId,
                     snippet: {
@@ -143,51 +143,51 @@ class Exporter extends React.Component {
                 }
                 axios.put(`https://www.googleapis.com/youtube/v3/playlists?part=snippet,status`, body, { headers })
                 .then(() => {
-                    console.log(`Renamed to ${this.props.chart.playlistTitle}`);
-                    this.addVideoToPlaylist(0, playlistId);
+                    console.log(`Renamed to ${this.props.chart.playlistTitle}`)
+                    this.addVideoToPlaylist(0, playlistId)
                 })
                 .catch((error) => {
-                    console.log(error);
-                });
+                    console.log(error)
+                })
             }
         })
         .catch((error) => {
-            this.checkErrorAndLogOut(error);
-            console.log(error);
-        });
+            this.checkErrorAndLogOut(error)
+            console.log(error)
+        })
     }
     checkErrorAndLogOut(error) {
         if (error.response.status === 401) {
-            alert('Session Expired, logging out...');
-            this.props.dispatch(userActions.logOut());
+            alert('Session Expired, logging out...')
+            this.props.dispatch(userActions.logOut())
         }
         if (error.response.status === 403) {
-            alert('You may have created too many playlists. Try again later.');
-            this.props.dispatch(userActions.logOut());
+            alert('You may have created too many playlists. Try again later.')
+            this.props.dispatch(userActions.logOut())
         }
     }
     export() {
         if (this.props.exporter.exportType === 'new') {
-            this.exportToPlaylist();
+            this.exportToPlaylist()
         }
         else if (this.props.exporter.exportType === 'existing') {
-            const regexPlaylist = /^PL[a-zA-Z0-9_]{16,32}$/;
+            const regexPlaylist = /^PL[a-zA-Z0-9_]{16,32}$/
             if (regexPlaylist.test(this.props.exporter.playlistId)) {
-                this.props.dispatch(exporterActions.updateExporter({ exportStatus: '' }));
+                this.props.dispatch(exporterActions.updateExporter({ exportStatus: '' }))
                 if (this.props.exporter.existingType === 'reset') {
-                    this.removeVideoFromPlaylist(this.props.exporter.playlistId);
+                    this.removeVideoFromPlaylist(this.props.exporter.playlistId)
                 }
                 else if (this.props.exporter.existingType === 'prepend') {
                     this.addVideoToPlaylist(0, this.props.exporter.playlistId)
                 }
             }
             else {
-                this.props.dispatch(exporterActions.updateExporter({ exportStatus: '플레이리스트 아이디가 존재하지 않습니다.' }));
+                this.props.dispatch(exporterActions.updateExporter({ exportStatus: '플레이리스트 아이디가 존재하지 않습니다.' }))
             }
         }
     }
     componentWillMount() {
-        Modal.setAppElement('body');
+        Modal.setAppElement('body')
     }
     render() {
         return (
@@ -253,7 +253,7 @@ const mapStateToProps = (store) => {
     return {
         chart: store.chart,
         exporter: store.exporter
-    };
+    }
 }
 
-export default connect(mapStateToProps)(Exporter);
+export default connect(mapStateToProps)(Exporter)

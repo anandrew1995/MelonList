@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
 
-import '../styles/Chart.css';
+import '../styles/Chart.css'
 
-import * as chartActions from '../actions/chartActions';
+import * as chartActions from '../actions/chartActions'
 
 class Chart extends React.Component {
     render() {
@@ -38,14 +38,14 @@ class Chart extends React.Component {
         )
     }
     componentDidMount() {
-        this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd));
+        this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd))
     }
 }
 
 const mapStateToProps = (store) => {
     return {
         chart: store.chart
-    };
+    }
 }
 
-export default connect(mapStateToProps)(Chart);
+export default connect(mapStateToProps)(Chart)

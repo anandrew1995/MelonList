@@ -12,8 +12,8 @@ export default function reducer(state = {
             return {
                 ...state,
                 ...action.payload
-            };
+            }
         default:
-            return state;
+            return state
     }
 }

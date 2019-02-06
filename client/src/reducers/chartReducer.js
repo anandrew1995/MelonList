@@ -11,7 +11,7 @@ export default function reducer(state = {
             return {
                 ...state,
                 ...action.payload
-            };
+            }
         case 'CLEAR_CHART':
             return {
                 ...state,
@@ -20,6 +20,6 @@ export default function reducer(state = {
                 retrievedDate: ''
             }
         default:
-            return state;
+            return state
     }
 }

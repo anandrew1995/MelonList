@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const moment = require('moment-timezone');
+const mongoose = require('mongoose')
+const moment = require('moment-timezone')
 
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+const Schema = mongoose.Schema
+const ObjectId = Schema.ObjectId
 
 const ChartSchema = new Schema({
 	classCd: {
@@ -37,8 +37,8 @@ const ChartSchema = new Schema({
     }],
 	chartDate: { type: String },
 	retrievedDate: { type: String }
-});
+})
 
-const Chart = mongoose.model('Chart', ChartSchema);
+const Chart = mongoose.model('Chart', ChartSchema)
 
-module.exports = Chart;
+module.exports = Chart

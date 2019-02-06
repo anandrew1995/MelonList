@@ -1,30 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import React from 'react'
+import { connect } from 'react-redux'
+import { Button } from 'react-bootstrap'
 
-import Exporter from './Exporter';
+import Exporter from './Exporter'
 
-import * as chartActions from '../actions/chartActions';
-import * as userActions from '../actions/userActions';
+import * as chartActions from '../actions/chartActions'
+import * as userActions from '../actions/userActions'
 
-import MelonFilters from '../melonFilters';
-import '../styles/Filters.css';
+import MelonFilters from '../melonFilters'
+import '../styles/Filters.css'
 
 class Filters extends React.Component {
     constructor() {
-        super();
-        this.retrieveChart = this.retrieveChart.bind(this);
-        this.inputHandler = this.inputHandler.bind(this);
-        this.logOut = this.logOut.bind(this);
+        super()
+        this.retrieveChart = this.retrieveChart.bind(this)
+        this.inputHandler = this.inputHandler.bind(this)
+        this.logOut = this.logOut.bind(this)
     }
     retrieveChart() {
-        this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd));
+        this.props.dispatch(chartActions.fetchChart(this.props.chart.chartType, this.props.chart.classCd))
     }
     inputHandler(e) {
-        this.props.dispatch(chartActions.updateChart({ [e.target.name]: e.currentTarget.value }));
+        this.props.dispatch(chartActions.updateChart({ [e.target.name]: e.currentTarget.value }))
     }
     logOut() {
-        this.props.dispatch(userActions.logOut());
+        this.props.dispatch(userActions.logOut())
     }
     render() {
         return (
@@ -76,7 +76,7 @@ const mapStateToProps = (store) => {
     return {
         chart: store.chart,
         user: store.user
-    };
+    }
 }
 
-export default connect(mapStateToProps)(Filters);
+export default connect(mapStateToProps)(Filters)
