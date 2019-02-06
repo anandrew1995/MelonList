@@ -38,7 +38,7 @@ app.set('view engine', 'html')
 
 //Body Parser Middleware
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 
 //Set a rate limit for requests (100 per min)
 var limiter = new RateLimit({
