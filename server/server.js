@@ -13,7 +13,7 @@ const charts = require('./routes/charts')
 
 const app = express()
 
-const port = process.env.PORT || 3000
+const port = 2728
 
 //Connect to DB
 mongoose.connect(config.database, { useNewUrlParser: true })
