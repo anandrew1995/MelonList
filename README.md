@@ -37,3 +37,6 @@ To run:
 2. execute `npm start` in the server folder.
 3. execute `npm start` for development and `npm run build` for production (static dist from webpack) in the client folder.
 4. If you started in development mode, you can access the site on `localhost:3000`, or wherever it has started. If you want to test the production build, you can go to `localhost:{config.port}`, where the static files are served from the server itself.
+
+
+![Image of MelonList](https://imgur.com/a/lTzmgxk)
