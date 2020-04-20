@@ -8,12 +8,14 @@ You need to add a client/src/config.json in this format:
 ```
 {
     "redirectUri": "",
+    "serverHost": "",
     "clientId": "",
     "secret": ""
 }
 ```
 
 Set the redirect uri to your site uri. e.g. `http://localhost:3000`
+Set the serverHost to where the server will run. e.g. `http://localhost:2728`. This will only be used in development mode.
 Set the client id and secret for your Google API (Oauth).
 
 You also need a server/config.json in this format:
