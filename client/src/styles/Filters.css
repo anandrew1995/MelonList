@@ -1,45 +1,45 @@
 .Filters {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-};
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
 
 .filter {
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
-    margin-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .filterName {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100px;
 }
 
-.filterName+div {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.filterName + div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
 .filterItem {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
-input[type='radio'] {
-    margin-right: 10px;
+input[type="radio"] {
+	margin-right: 10px;
 }
 
 .buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
+	margin-top: 20px;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .line {
-    border-bottom: 1px grey solid;
-    margin-bottom: 5px;
+	border-bottom: 1px grey solid;
+	margin-bottom: 5px;
 }
