@@ -1,8 +1,8 @@
 import axios from "axios";
 
-import { getServerHost } from "../lib";
+import { getServerHost } from "lib";
 
-import MelonFilters from "../melonFilters";
+import MelonFilters from "melonFilters";
 
 export function updateChart(chart) {
 	return {

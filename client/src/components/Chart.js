@@ -1,76 +1,66 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import "../styles/Chart.css";
+import "./Chart.css";
 
-import * as chartActions from "../actions/chartActions";
+import * as chartActions from "actions/chartActions";
 
-class Chart extends React.Component {
-	render() {
-		return (
-			<div className="Chart">
-				{this.props.chart.songs.length > 0 ? (
-					<div className="table">
-						<div className="tableTitle">
-							{this.props.chart.playlistTitle}
-						</div>
-						<table>
-							<tbody>
-								<tr>
-									<th>순위</th>
-									<th>제목</th>
-									<th>가수</th>
-									<th>유투브 링크</th>
-								</tr>
-								{this.props.chart.songs.map((song) => (
+const Chart = () => {
+	const chart = useSelector((store) => store.chart);
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(chartActions.fetchChart(chart.chartType, chart.classCd));
+	}, []);
+
+	return (
+		<div className="Chart">
+			{chart.songs.length > 0 ? (
+				<div className="table">
+					<div className="tableTitle">{chart.playlistTitle}</div>
+					<table>
+						<tbody>
+							<tr>
+								<th>순위</th>
+								<th>제목</th>
+								<th>가수</th>
+								<th>유투브 링크</th>
+							</tr>
+							{chart.songs.map((song) => {
+								const videoLength = song.videoTitle.length;
+								const shortVideoTitle = song.videoTitle.substr(
+									0,
+									20
+								);
+								return (
 									<tr key={song.rank}>
 										<td>{song.rank}</td>
 										<td>{song.title}</td>
 										<td>{song.artist}</td>
 										<td>
 											<a
-												href={
-													"https://www.youtube.com/watch?v=" +
-													song.videoId
-												}
+												href={`https://www.youtube.com/watch?v="${song.videoId}`}
 												target="_blank"
+												rel="noopener noreferrer"
 											>
-												{song.videoTitle.length > 20
-													? `${song.videoTitle.substring(
-															0,
-															20
-													  )}...`
+												{videoLength > 20
+													? `${shortVideoTitle}...`
 													: song.videoTitle}
 											</a>
 										</td>
 									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				) : (
-					<div>로딩중...</div>
-				)}
-				{this.props.chart.retrievedDate ? (
-					<div>차트 업데이트: {this.props.chart.retrievedDate}</div>
-				) : null}
-			</div>
-		);
-	}
-	componentDidMount() {
-		this.props.dispatch(
-			chartActions.fetchChart(
-				this.props.chart.chartType,
-				this.props.chart.classCd
-			)
-		);
-	}
-}
-
-const mapStateToProps = (store) => {
-	return {
-		chart: store.chart,
-	};
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
+			) : (
+				<div>로딩중...</div>
+			)}
+			{chart.retrievedDate ? (
+				<div>차트 업데이트: {chart.retrievedDate}</div>
+			) : null}
+		</div>
+	);
 };
 
-export default connect(mapStateToProps)(Chart);
+export default Chart;

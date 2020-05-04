@@ -1,12 +1,10 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 const RateLimit = require("express-rate-limit");
-const https = require("https");
 
 const config = require("./config");
 const index = require("./routes/index");
@@ -67,20 +65,8 @@ app.use((error, req, res, next) => {
 	});
 });
 
-// app.listen(config.port, () => {
-// 	console.log(`Server started on port ${config.port}`);
-// });
-
-https
-	.createServer(
-		{
-			key: fs.readFileSync("server.key"),
-			cert: fs.readFileSync("server.crt"),
-		},
-		app
-	)
-	.listen(config.port, () => {
-		console.log(`Server started at https://localhost:${config.port}/`);
-	});
+app.listen(config.port, () => {
+	console.log(`Server started on port ${config.port}`);
+});
 
 module.exports = app;

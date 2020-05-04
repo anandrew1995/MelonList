@@ -1,8 +1,7 @@
-import config from "../src/config.json";
+import config from "config.json";
 
 export const getServerHost = () => {
-	const isOnGithub = window.location.href.includes("github.io");
-	if (process.env.NODE_ENV === "development" || isOnGithub) {
+	if (process.env.NODE_ENV === "development") {
 		return config.serverHost;
 	}
 	return "";

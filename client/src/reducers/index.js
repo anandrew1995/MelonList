@@ -1,11 +1,11 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from "redux";
 
-import chart from './chartReducer'
-import user from './userReducer'
-import exporter from './exporterReducer'
+import chart from "reducers/chartReducer";
+import user from "reducers/userReducer";
+import exporter from "reducers/exporterReducer";
 
 export default combineReducers({
-    chart,
-    user,
-    exporter
-})
+	chart,
+	user,
+	exporter,
+});
