@@ -1,14 +1,14 @@
 import React from "react";
 
-import "./App.css";
+import "../styles/App.css";
 
-import Login from "components/Login";
-import Filters from "components/Filters";
-import Chart from "components/Chart";
-// import Downloader from "components/Downloader";
-import CertificateMessage from "components/CertificateMessage";
+import Login from "./Login";
+import Filters from "./Filters";
+import Chart from "./Chart";
+// import Downloader from "./Downloader";
+import CertificateMessage from "./CertificateMessage";
 
-import favicon from "images/favicon.png";
+import favicon from "../images/favicon.png";
 
 const App = () => (
 	<div className="App">

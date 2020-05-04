@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import "./Chart.css";
+import "../styles/Chart.css";
 
-import * as chartActions from "actions/chartActions";
+import * as chartActions from "../actions/chartActions";
 
 const Chart = () => {
 	const chart = useSelector((store) => store.chart);

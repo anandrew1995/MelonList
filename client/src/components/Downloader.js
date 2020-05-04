@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-import { getServerHost } from "lib";
+import { getServerHost } from "../lib";
 
 const Downloader = () => {
 	const chart = useSelector((store) => store.chart);

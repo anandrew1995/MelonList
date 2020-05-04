@@ -4,10 +4,10 @@ import Modal from "react-modal";
 import axios from "axios";
 import { Button, ProgressBar, FormControl } from "react-bootstrap";
 
-import * as userActions from "actions/userActions";
-import * as exporterActions from "actions/exporterActions";
+import * as userActions from "../actions/userActions";
+import * as exporterActions from "../actions/exporterActions";
 
-import "./Exporter.css";
+import "../styles/Exporter.css";
 
 const customStyles = {
 	overlay: {

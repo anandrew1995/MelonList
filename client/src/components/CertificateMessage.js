@@ -1,6 +1,6 @@
 import React from "react";
 
-import config from "config.json";
+import config from "../config";
 
 const CertificateMessage = () => (
 	<div style={{ marginBottom: "20px" }}>

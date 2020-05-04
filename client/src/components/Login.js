@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 
-import config from "config";
-import "./Login.css";
+import config from "../config";
+import "../styles/Login.css";
 
-import * as userActions from "actions/userActions";
+import * as userActions from "../actions/userActions";
 
-import signInImg from "images/btn_google_signin_dark_normal_web@2x.png";
+import signInImg from "../images/btn_google_signin_dark_normal_web@2x.png";
 
 const scopes = ["https://www.googleapis.com/auth/youtube"];
 const signInUrl =

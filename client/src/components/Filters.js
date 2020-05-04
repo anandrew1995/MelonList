@@ -2,12 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "react-bootstrap";
 
-import Exporter from "components/Exporter";
+import Exporter from "./Exporter";
 
-import * as chartActions from "actions/chartActions";
+import * as chartActions from "../actions/chartActions";
 
-import MelonFilters from "melonFilters";
-import "./Filters.css";
+import MelonFilters from "../melonFilters";
+import "../styles/Filters.css";
 
 const Filters = () => {
 	const chart = useSelector((store) => store.chart);
