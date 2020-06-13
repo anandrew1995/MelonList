@@ -39,4 +39,4 @@ To run:
 4. If you started in development mode, you can access the site on `localhost:3000`, or wherever it has started. If you want to test the production build, you can go to `localhost:{config.port}`, where the static files are served from the server itself.
 
 
-![Image of MelonList](https://i.imgur.com/6EPzI1e.png)
+<img alt="Melon List" src="https://github.com/ys27/MelonList/blob/master/README_images/home.png?raw=true" width="100%">
